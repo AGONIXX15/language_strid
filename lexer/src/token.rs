@@ -5,6 +5,7 @@ pub struct Token<'a> {
     kind: TokenKind,
     value: &'a str,
     line: usize,
+    // range exclusive in b[a,b)
     column_range: (usize, usize),
 }
 

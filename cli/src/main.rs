@@ -29,7 +29,7 @@ fn main(){
     }
     // buffer ready to use
     
-    let tokens: Vec<Token> = match lexer::tokenize(&buffer) {
+    let tokens: Vec<Token> = match lexer::tokenize(&buffer,&args[1]) {
         Ok(v) => v,
         Err(e) => {
             eprintln!("Lexer error: {}", e);

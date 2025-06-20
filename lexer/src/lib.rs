@@ -5,7 +5,7 @@ use self::engine::Lexer;
 
 pub mod engine;
 pub mod token;
-mod token_type;
+pub mod token_type;
 pub mod errors;
 
 

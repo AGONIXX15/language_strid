@@ -1,8 +1,9 @@
 
 
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Copy,Clone, PartialEq, Eq, Hash)]
 pub enum TokenKind{
+    FLOAT,
     INTEGER,
     PLUS,
     STAR,

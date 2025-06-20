@@ -1,4 +1,3 @@
-
 use std::env;
 use std::fs::File;
 use std::io::Read;
@@ -6,8 +5,10 @@ use std::io::Read;
 use lexer::errors::LexerError;
 use lexer::token::Token;
 
+use parser::parser::engine::Parser;
+use parser::parser::lookups::BindingPower;
 
-fn main(){
+fn main() {
     let args: Vec<String> = env::args().collect();
 
     if args.len() < 2 {
@@ -27,9 +28,10 @@ fn main(){
     if let Err(e) = file.read_to_string(&mut buffer) {
         eprintln!("Error al leer el archivo: {e}");
     }
+
     // buffer ready to use
-    
-    let tokens: Vec<Token> = match lexer::tokenize(&buffer,&args[1]) {
+
+    let tokens: Vec<Token> = match lexer::tokenize(&buffer, &args[1]) {
         Ok(v) => v,
         Err(e) => {
             eprintln!("Lexer error: {}", e);
@@ -37,8 +39,13 @@ fn main(){
         }
     };
 
-    for t in tokens {
-        println!("{:#?}",t);
+    let mut parser: Parser = Parser::new(&tokens, 0);
+    let v = Parser::parse_expr(&mut parser, BindingPower::Primary)
+        .map_err(|e| {
+            eprintln!("Parser error: {}", e);
+        })
+        .ok();
+    for expr in v {
+        println!("{:#?}", expr);
     }
-
 }

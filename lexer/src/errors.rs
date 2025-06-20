@@ -19,6 +19,7 @@ pub enum LexerError<'a> {
         line: usize,
         col: usize,
     },
+
     UnterminatedString {
         context: &'a str,
         filename: &'a str,
@@ -37,9 +38,9 @@ impl<'a> fmt::Display for LexerError<'a> {
                 line,
                 col,
             } => {
-                writeln!(f, "{} {}", "invalid character".red(), character);
-                writeln!(f, "{}:{}:{}", filename.blue(), line.green(), col.white());
-                writeln!(f, "|\n{:>3} | {}", line.green(), context);
+                writeln!(f, "{} {}", "invalid character".red(), character)?;
+                writeln!(f, "{}:{}:{}", filename.blue(), line.green(), col.white())?;
+                writeln!(f, "|\n{:>3} | {}", line.green(), context)?;
                 writeln!(
                     f,
                     "| {:>width$}^ {}",
@@ -55,9 +56,9 @@ impl<'a> fmt::Display for LexerError<'a> {
                 line,
                 col,
             } => {
-                writeln!(f, "{}", "unexpected EOF".red());
-                writeln!(f, "--> {}:{}:{}", filename, line, col);
-                writeln!(f, "  |\n{:>3} | {}", line.green(), context);
+                writeln!(f, "{}", "unexpected EOF".red())?;
+                writeln!(f, "--> {}:{}:{}", filename, line, col)?;
+                writeln!(f, "  |\n{:>3} | {}", line.green(), context)?;
                 writeln!(
                     f,
                     "  | {:>width$}^ {}",
@@ -76,7 +77,13 @@ impl<'a> fmt::Display for LexerError<'a> {
                 writeln!(f, "{}", "Unterminated String literal".red())?;
                 writeln!(f, " --> {}:{}:{}", filename.blue(), line.green(), col)?;
                 writeln!(f, "  |\n{:>3} | {}", line.green(), context)?;
-                writeln!(f, "  | {:>width$}^ {}", "","unterminated string".red(), width = *col)
+                writeln!(
+                    f,
+                    "  | {:>width$}^ {}",
+                    "",
+                    "unterminated string".red(),
+                    width = *col
+                )
             }
         }
     }
